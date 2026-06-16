@@ -1,0 +1,1 @@
+Day 7 Challenge Completed. Terraform Infrastructure as Code is officially alive on AcerAspire7! 🚀
