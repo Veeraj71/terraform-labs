@@ -1,15 +1,14 @@
-# Root main.tf
+# Root main.tf - Workspace Lab
 
-# Call 1: Deploying App Configuration via Module
-module "app_config" {
-  source          = "./modules/file_generator"
-  filename_input  = "app-service.meta"
-  payload_content = "Microservice routing setup via root registry."
+# Global local variables that auto-detect the current workspace
+locals {
+  current_env  = terraform.workspace
+  project_name = "aspire-core"
 }
 
-# Call 2: Deploying Database Parameters via SAME Module
-module "db_config" {
+# Calling our Day 10 module dynamically based on workspace!
+module "env_specific_config" {
   source          = "./modules/file_generator"
-  filename_input  = "database.meta"
-  payload_content = "DB connection pooling and cluster thresholds."
+  filename_input  = "${local.current_env}-service.meta"
+  payload_content = "Automated deployment running inside the ISOLATED [${upper(local.current_env)}] workspace."
 }
