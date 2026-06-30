@@ -1,0 +1,26 @@
+# monitoring/prometheus/prometheus.yml
+
+# 1. Global Configurations
+global:
+  scrape_interval: 15s     # How frequently to scrape targets by default
+  evaluation_interval: 15s # How frequently to evaluate alerting rules
+  scrape_timeout: 10s      # Timeout threshold for a single scrape request
+
+# 2. Alertmanager Configuration (Where to route alerts when things break)
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: [] # We will configure this when we introduce alerting matrices
+
+# 3. Scrape Configurations (The Target Registry)
+scrape_configs:
+  # Job 1: Monitoring the Prometheus Server itself
+  - job_name: "prometheus_internal"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Job 2: Monitoring our local App/Infrastructure via Node Exporter
+  - job_name: "infrastructure_node_exporter"
+    scrape_interval: 5s # Overriding global interval for high-priority monitoring
+    static_configs:
+      - targets: ["localhost:9100"]
